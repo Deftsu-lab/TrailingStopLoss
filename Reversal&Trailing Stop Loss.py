@@ -50,7 +50,7 @@ def strategy(entry, lookback, qty, open_position=False):
 				break
 
 while True:
-    strategy(-0.0015, 60, 250)
+    strategy(-0.0015, 60, 0.0006)
 
 
 
