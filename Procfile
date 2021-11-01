@@ -1,1 +1,1 @@
-worker: python LiveData.py & "Reversal&Trailing Stop Loss.py" & wait -n
+worker: python LiveData.py & python "Reversal&Trailing Stop Loss.py" & wait -n
