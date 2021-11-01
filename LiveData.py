@@ -32,24 +32,11 @@ def createframe(msg):
     df.Time = pd.to_datetime(df.Time, unit='ms')
     return df
 
-def create_connection():
-    try:
-        conn = sqlite3.connect(db)
-    except Error as err:
-        print(err)
-
-    return conn
-
-def delete_old_entries(conn):
-    sql = f"""DELETE FROM {pair} WHERE Time < DATETIME('now', '-2 minute')"""
-    cur = conn.cursor()
-    cur.execute(sql)
-    conn.commit
 
 async def main():
+    time.sleep(30)
 
     async with socket as tscm:
-        #t = dt.datetime.now()
         print('sammle Livedaten...')
         while True:
 
@@ -57,14 +44,6 @@ async def main():
             if res:
                 frame = createframe(res)
                 frame.to_sql(pair, engine, if_exists='append', index=False)
-                c = create_connection()
-                with c:
-                    delete_old_entries(c)
-                #delta = dt.datetime.now() - t
-                #if delta.seconds >= 60:
-                    #print(frame)
-                    #t = dt.datetime.now()
-
     await client.close_connection()
 
 if __name__ == "__main__":

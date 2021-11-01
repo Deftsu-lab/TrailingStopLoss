@@ -1,10 +1,11 @@
+# coding: utf-8
 import userdates
 import sqlalchemy
 import pandas as pd
 from binance.client import Client
 import datetime as dt
 import time
-import os
+import sqlite3
 
 pair = 'BTCUSDT'
 
@@ -15,10 +16,17 @@ engine = sqlalchemy.create_engine('sqlite:///'+pair+'stream.db')
 df = pd.read_sql(pair, engine)
 
 def strategy(entry, lookback, qty, open_position=False):
-	print('Lösche alte Datenbank')
-	os.remove(pair+'stream.db')
-	print('Warte 60 Sekunden auf Daten')
-	time.sleep(60)
+	print('Entferne alte Datenbank...')
+	conn = sqlite3.connect(pair+'stream.db')
+	cursor = conn.cursor()
+	cursor.execute(f"""DROP TABLE {pair}""")
+	conn.commit()
+	conn.close()
+	time.sleep(5)
+	print('Datenbank sauber.')
+	time.sleep(3)
+	print('Warte 60 Sekunden auf neue Daten')
+	time.sleep(90)
 	print((f'Schaue nach nem guten Preis von {pair}'))
 	while True:
 		df = pd.read_sql(pair, engine)
