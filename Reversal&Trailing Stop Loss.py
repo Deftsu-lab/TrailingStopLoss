@@ -14,6 +14,7 @@ df = pd.read_sql(pair, engine)
 
 def strategy(entry, lookback, qty, open_position=False):
 	while True:
+		t = dt.datetime.now()
 		df = pd.read_sql(pair, engine)
 		lookbackperiod = df.iloc[-lookback:]
 		cumret = (lookbackperiod.Price.pct_change() + 1).cumprod() - 1
@@ -32,6 +33,7 @@ def strategy(entry, lookback, qty, open_position=False):
 		#TSL part from here on
 	if open_position:
 		while True:
+			t = dt.datetime.now()
 			if order:
 				delta = dt.datetime.now() - t
 				if delta.seconds >= 60:
