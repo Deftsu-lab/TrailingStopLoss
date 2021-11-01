@@ -2,6 +2,7 @@ import userdates
 import sqlalchemy
 import pandas as pd
 from binance.client import Client
+import datetime as dt
 
 pair = 'BTCUSDT'
 
@@ -16,6 +17,10 @@ def strategy(entry, lookback, qty, open_position=False):
 		df = pd.read_sql(pair, engine)
 		lookbackperiod = df.iloc[-lookback:]
 		cumret = (lookbackperiod.Price.pct_change() + 1).cumprod() - 1
+		delta = dt.datetime.now() - t
+		if delta.seconds >= 15:
+			print((f'Waiting for good Trade for {pair}'))
+			t = dt.datetime.now()
 		if cumret[cumret.last_valid_index()] < entry:
 			order = client.create_order(symbol=pair,
 										side='BUY',
@@ -27,6 +32,11 @@ def strategy(entry, lookback, qty, open_position=False):
 		#TSL part from here on
 	if open_position:
 		while True:
+			if order:
+				delta = dt.datetime.now() - t
+				if delta.seconds >= 60:
+					print(order)
+					t = dt.datetime.now()
 			df = pd.read_sql(f"""SELECT * FROM {pair} WHERE \
 			Time >= '{pd.to_datetime(order['transactTime'], unit='ms')}'""", engine)
 			df['Benchmark'] = df.Price.cummax()

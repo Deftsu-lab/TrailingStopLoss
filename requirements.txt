@@ -3,3 +3,4 @@ python-binance
 asyncio
 sqlalchemy
 nest_asyncio
+datetime
