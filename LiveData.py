@@ -50,6 +50,7 @@ async def main():
 
     async with socket as tscm:
         #t = dt.datetime.now()
+        print('sammle Livedaten...')
         while True:
 
             res = await tscm.recv()
