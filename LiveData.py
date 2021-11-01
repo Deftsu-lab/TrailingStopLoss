@@ -33,7 +33,6 @@ def createframe(msg):
     return df
 
 def create_connection():
-    conn = None
     try:
         conn = sqlite3.connect(db)
     except Error as err:
@@ -50,7 +49,7 @@ def delete_old_entries(conn):
 async def main():
 
     async with socket as tscm:
-        t = dt.datetime.now()
+        #t = dt.datetime.now()
         while True:
 
             res = await tscm.recv()
@@ -60,10 +59,10 @@ async def main():
                 c = create_connection()
                 with c:
                     delete_old_entries(c)
-                delta = dt.datetime.now() - t
-                if delta.seconds >= 60:
-                    print(frame)
-                    t = dt.datetime.now()
+                #delta = dt.datetime.now() - t
+                #if delta.seconds >= 60:
+                    #print(frame)
+                    #t = dt.datetime.now()
 
     await client.close_connection()
 
