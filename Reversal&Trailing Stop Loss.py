@@ -3,6 +3,8 @@ import sqlalchemy
 import pandas as pd
 from binance.client import Client
 import datetime as dt
+import time
+import os
 
 pair = 'BTCUSDT'
 
@@ -13,7 +15,11 @@ engine = sqlalchemy.create_engine('sqlite:///'+pair+'stream.db')
 df = pd.read_sql(pair, engine)
 
 def strategy(entry, lookback, qty, open_position=False):
-	print((f'Schae nach nem guten Preis von {pair}'))
+	print('Lösche alte Datenbank')
+	os.remove(pair+'stream.db')
+	print('Warte 60 Sekunden auf Daten')
+	time.sleep(60)
+	print((f'Schaue nach nem guten Preis von {pair}'))
 	while True:
 		df = pd.read_sql(pair, engine)
 		lookbackperiod = df.iloc[-lookback:]
