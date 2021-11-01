@@ -35,7 +35,7 @@ def strategy(entry, lookback, qty, open_position=False):
 			Time >= '{pd.to_datetime(order['transactTime'], unit='ms')}'""", engine)
 			df['Benchmark'] = df.Price.cummax()
 			df['TSL'] = df.Benchmark * 0.92
-			if df[df.Price < df.TSL].first_valid_index():
+			if df[df.Price < df.TSL].last_valid_index():
 				order = client.create_order(symbol=pair,
 										side='SELL',
 										type='MARKET',
