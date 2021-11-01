@@ -34,7 +34,7 @@ def strategy(entry, lookback, qty, open_position=False):
 			df = pd.read_sql(f"""SELECT * FROM {pair} WHERE \
 			Time >= '{pd.to_datetime(order['transactTime'], unit='ms')}'""", engine)
 			df['Benchmark'] = df.Price.cummax()
-			df['TSL'] = df.Benchmark * 0.98
+			df['TSL'] = df.Benchmark * 0.92
 			if df[df.Price < df.TSL].first_valid_index():
 				order = client.create_order(symbol=pair,
 										side='SELL',
