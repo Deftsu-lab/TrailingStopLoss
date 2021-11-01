@@ -1,0 +1,1 @@
+worker: python LiveData.py & "Reversal&Trailing Stop Loss.py" & wait -n

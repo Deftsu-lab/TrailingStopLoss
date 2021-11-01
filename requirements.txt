@@ -1,0 +1,5 @@
+pandas
+python-binance
+asyncio
+sqlalchemy
+nest_asyncio
