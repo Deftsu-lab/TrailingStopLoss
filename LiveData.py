@@ -50,7 +50,7 @@ async def main():
             if res:
                 frame = createframe(res)
                 frame.to_sql(pair, engine, if_exists='append', index=False)
-                if float(frame.Timestamp) % 3600 == 0:
+                if float(frame.Timestamp) % 7200 == 0:
                     delete_old(db)
                    
     await client.close_connection()

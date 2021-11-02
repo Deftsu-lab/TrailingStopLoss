@@ -25,14 +25,21 @@ def strategy(entry, lookback, qty, open_position=False):
 		df = pd.read_sql(pair, engine)
 		lookbackperiod = df.iloc[-lookback:]
 		cumret = (lookbackperiod.Price.pct_change() + 1).cumprod() - 1
-		if cumret[cumret.last_valid_index()] < entry:
-			order = client.create_order(symbol=pair,
-										side='BUY',
-										type='MARKET',
-										quantity=qty)
-			print(order)
-			open_position = True
-			break
+		if cumret:
+			if cumret[cumret.last_valid_index()] < entry:
+				order = client.create_order(symbol=pair,
+											side='BUY',
+											type='MARKET',
+											quantity=qty)
+				print(order)
+				open_position = True
+				break
+		else:
+			print('Warte auf Daten, weil grad keine da...')
+			time.sleep(60)
+
+
+			
 		#TSL part from here on
 	if open_position:
 		while True:
