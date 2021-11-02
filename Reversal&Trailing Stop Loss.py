@@ -6,6 +6,7 @@ from binance.client import Client
 import datetime as dt
 import time
 import sqlite3
+import os
 
 pair = 'BTCUSDT'
 
@@ -17,11 +18,12 @@ df = pd.read_sql(pair, engine)
 
 def strategy(entry, lookback, qty, open_position=False):
 	print('Entferne alte Datenbank...')
-	conn = sqlite3.connect(pair+'stream.db')
-	cursor = conn.cursor()
-	cursor.execute(f"""DROP TABLE {pair}""")
-	conn.commit()
-	conn.close()
+	os.remove(pair+'stream.db')
+	#conn = sqlite3.connect(pair+'stream.db')
+	#cursor = conn.cursor()
+	#cursor.execute(f"""DROP TABLE {pair}""")
+	#conn.commit()
+	#conn.close()
 	time.sleep(5)
 	print('Datenbank sauber.')
 	time.sleep(3)

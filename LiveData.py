@@ -13,7 +13,7 @@ from binance import BinanceSocketManager
 #taskverwaltung mit zeit
 import asyncio
 import datetime as dt
-from time import sleep
+import time
 
 
 pair = 'BTCUSDT'
@@ -34,7 +34,7 @@ def createframe(msg):
 
 
 async def main():
-    time.sleep(30)
+    time.sleep(10)
 
     async with socket as tscm:
         print('sammle Livedaten...')
