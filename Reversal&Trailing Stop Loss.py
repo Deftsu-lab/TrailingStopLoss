@@ -17,29 +17,26 @@ engine = sqlalchemy.create_engine('sqlite:///'+pair+'stream.db')
 df = pd.read_sql(pair, engine)
 #Reversal Einstieg
 def strategy(entry, lookback, qty, open_position=False):
-	time.sleep(10)
-	print('Warte neue Daten')
-	time.sleep(61)
+	#time.sleep(10)
+	print('Warte auf neue Daten')
+	#time.sleep(61)
 	print((f'Schaue nach nem guten Preis von {pair}'))
 	while True:
 		df = pd.read_sql(pair, engine)
 		lookbackperiod = df.iloc[-lookback:]
 		cumret = (lookbackperiod.Price.pct_change() + 1).cumprod() - 1
-		if cumret:
+		try:
 			if cumret[cumret.last_valid_index()] < entry:
 				order = client.create_order(symbol=pair,
-											side='BUY',
-											type='MARKET',
-											quantity=qty)
+										side='BUY',
+										type='MARKET',
+										quantity=qty)
 				print(order)
 				open_position = True
 				break
-		else:
-			print('Warte auf Daten, weil grad keine da...')
-			time.sleep(60)
-
-
-			
+		except KeyError:
+			print('Nicht genug Daten warte noch weiter...')
+			#time.sleep(60)
 		#TSL part from here on
 	if open_position:
 		while True:
