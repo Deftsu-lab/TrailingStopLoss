@@ -26,8 +26,8 @@ engine = sqlalchemy.create_engine(tableUrl)
 
 def createframe(msg):
     df = pd.DataFrame([msg])
-    df = df.loc[:,['s', 'E', 'p']]
-    df.columns = ['symbol', 'Time', 'Price']
+    df = df.loc[:,['s', 'E', 'p', 'E']]
+    df.columns = ['symbol', 'Time', 'Price', 'Timestamp']
     df.Price = df.Price.astype(float)
     df.Time = pd.to_datetime(df.Time, unit='ms')
     return df
@@ -35,15 +35,21 @@ def createframe(msg):
 
 async def main():
     time.sleep(10)
-
     async with socket as tscm:
         print('sammle Livedaten...')
         while True:
-
             res = await tscm.recv()
             if res:
                 frame = createframe(res)
                 frame.to_sql(pair, engine, if_exists='append', index=False)
+            if float(frame.Timestamp) % 3600 == 0:
+                conn = sqlite3.connect(db)
+                c = conn.cursor()
+                c.execute('DELETE FROM btcusdt;',)
+                print('Entferne ', c.rowcount, ' Zeilen an alten Daten')
+                conn.commit()
+                conn.close()
+                print('Sammle Livedaten...')
     await client.close_connection()
 
 if __name__ == "__main__":
