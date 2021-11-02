@@ -34,7 +34,6 @@ def createframe(msg):
 
 
 async def main():
-    time.sleep(10)
     async with socket as tscm:
         print('sammle Livedaten...')
         while True:

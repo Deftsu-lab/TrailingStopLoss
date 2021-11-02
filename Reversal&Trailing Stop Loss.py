@@ -15,10 +15,10 @@ client = Client(userdates.api_key, userdates.api_secret)
 engine = sqlalchemy.create_engine('sqlite:///'+pair+'stream.db')
 
 df = pd.read_sql(pair, engine)
-
+#Reversal Einstieg
 def strategy(entry, lookback, qty, open_position=False):
 	time.sleep(10)
-	print('Warte 60 Sekunden auf neue Daten')
+	print('Warte neue Daten')
 	time.sleep(61)
 	print((f'Schaue nach nem guten Preis von {pair}'))
 	while True:
