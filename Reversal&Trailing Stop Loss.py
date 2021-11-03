@@ -36,7 +36,7 @@ def strategy(entry, lookback, qty, open_position=False):
 				break
 		except KeyError:
 			print('Nicht genug Daten warte noch weiter...')
-			#time.sleep(60)
+			time.sleep(20)
 		#TSL part from here on
 	if open_position:
 		while True:
