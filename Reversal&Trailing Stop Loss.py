@@ -17,9 +17,8 @@ engine = sqlalchemy.create_engine('sqlite:///'+pair+'stream.db')
 df = pd.read_sql(pair, engine)
 #Reversal Einstieg
 def strategy(entry, lookback, qty, open_position=False):
-	#time.sleep(10)
 	print('Warte auf neue Daten')
-	#time.sleep(61)
+	time.sleep(61)
 	print((f'Schaue nach nem guten Preis von {pair}'))
 	while True:
 		df = pd.read_sql(pair, engine)
@@ -37,6 +36,7 @@ def strategy(entry, lookback, qty, open_position=False):
 		except KeyError:
 			print('Nicht genug Daten warte noch weiter...')
 			time.sleep(20)
+			print('Neuer Versuch...')
 		#TSL part from here on
 	if open_position:
 		while True:
